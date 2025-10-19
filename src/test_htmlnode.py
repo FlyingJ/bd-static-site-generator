@@ -13,10 +13,10 @@ class TestHTMLNode(unittest.TestCase):
                 "target": "_blank",
             }
             )
-        expected = ' href="https://www.google.com" target="_blank"'
-        self.assertEqual(node.props_to_html(), expected)        
-    
-    def test_string_repre(self):
+        expected = 'href="https://www.google.com" target="_blank"'
+        self.assertEqual(node.props_to_html(), expected)
+
+    def test_string_repr(self):
         node = HTMLNode(
             'p',
             'this is some text',
@@ -40,7 +40,7 @@ class TestHTMLNode(unittest.TestCase):
                 "target": "_blank",
             }
             )
-        expected = ' some="random words" being="used as properties" href="https://www.google.com" target="_blank"'
+        expected = 'some="random words" being="used as properties" href="https://www.google.com" target="_blank"'
         self.assertEqual(node.props_to_html(), expected)
 
 
