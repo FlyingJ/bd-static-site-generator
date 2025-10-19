@@ -15,13 +15,13 @@ class TestTextNode(unittest.TestCase):
         self.assertEqual(node, node2)
 
     def test_neq_0(self):
-        node = TextNode("Some text", TextType.NORMAL)
+        node = TextNode("Some text", TextType.TEXT)
         node2 = TextNode("Some text", TextType.ITALIC)
         self.assertNotEqual(node, node2)
 
     def test_neq_1(self):
-        node = TextNode("A text", TextType.NORMAL)
-        node2 = TextNode("Another text", TextType.NORMAL)
+        node = TextNode("A text", TextType.TEXT)
+        node2 = TextNode("Another text", TextType.TEXT)
         self.assertNotEqual(node, node2)
 
 if __name__ == "__main__":
