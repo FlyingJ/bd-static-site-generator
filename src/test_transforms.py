@@ -2,7 +2,12 @@ import unittest
 
 from textnode import TextNode
 from texttype import TextType
-from transforms import split_nodes_delimiter, text_node_to_html_node
+from transforms import split_nodes_delimiter
+from transforms import extract_markdown_links
+from transforms import split_nodes_link
+from transforms import extract_markdown_images
+from transforms import split_nodes_image
+from transforms import text_node_to_html_node
 
 class TestTextToHTMLTransforms(unittest.TestCase):
     def test_text(self):
@@ -56,7 +61,7 @@ class TestTextToHTMLTransforms(unittest.TestCase):
     def test_text_to_html_node_error(self):
         pass
 
-class TestTextSplitTransforms(unittest.TestCase):
+class TestTextSplitDelimiterTransforms(unittest.TestCase):
     def test_split_nodes_delimiter_text_code(self):
         node = TextNode("This is text with a `code block` word", TextType.TEXT)
         result = split_nodes_delimiter([node], "`", TextType.CODE)
@@ -90,6 +95,62 @@ class TestTextSplitTransforms(unittest.TestCase):
                 TextNode("italicized", TextType.ITALIC),
                 TextNode(" word", TextType.TEXT),
             ],
+        ]
+        self.assertEqual(result, expectation)
+
+class TestExtractMarkdownLinks(unittest.TestCase):
+    def test_extract_markdown_links_0(self):
+        text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+        result = extract_markdown_links(text)
+        expectation = [
+            ("to boot dev", "https://www.boot.dev"),
+            ("to youtube", "https://www.youtube.com/@bootdotdev")
+        ]
+        self.assertEqual(result, expectation)
+
+class TestExtractMarkdownImages(unittest.TestCase):
+    def test_extract_markdown_images_0(self):
+        text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+        result = extract_markdown_images(text)
+        expectation = [
+            ("rick roll", "https://i.imgur.com/aKaOqIh.gif"),
+            ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")
+        ]
+        self.assertEqual(result, expectation)
+
+    def test_extract_markdown_images_1(self):
+        text = "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
+        result = extract_markdown_images(text)
+        expectation = [("image", "https://i.imgur.com/zjjcJKZ.png")]
+        self.assertEqual(result, expectation)
+        
+class TestTextSplitImageTransforms(unittest.TestCase):
+    def test_split_images(self):
+        node = TextNode(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
+            TextType.TEXT,
+        )
+        result = split_nodes_image([node])
+        expectation = [
+            TextNode("This is text with an ", TextType.TEXT),
+            TextNode("image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png"),
+            TextNode(" and another ", TextType.TEXT),
+            TextNode(
+                "second image", TextType.IMAGE, "https://i.imgur.com/3elNhQu.png"
+            ),
+        ]
+        self.assertListEqual(result, expectation)
+    
+class TestTextSplitLinkTransforms(unittest.TestCase):
+    def test_split_links_0(self):
+        text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+        node = TextNode(text, TextType.TEXT)
+        result = split_nodes_link([node])
+        expectation = [
+            TextNode("This is text with a link ", TextType.TEXT),
+            TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"),
+            TextNode(" and ", TextType.TEXT),
+            TextNode("to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev"),
         ]
         self.assertEqual(result, expectation)
 
