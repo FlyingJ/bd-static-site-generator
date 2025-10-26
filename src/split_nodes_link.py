@@ -6,7 +6,7 @@ from texttype import TextType
 
 markdown_regexes = {
     'image': r'(!\[([^\]]+)\]\(([^\)]+)\))',
-    'link': r'([^!]\[([^\]]+)\]\(([^\)]+)\))',
+    'link': r'[^!](\[([^\]]+)\]\(([^\)]+)\))',
 }
 
 def get_bounds(text_type):
@@ -47,7 +47,41 @@ def get_link_nodes(text):
         new_nodes.append(
             (link_bounds.pop(0), TextNode(text, TextType.LINK, url))
         )
+    print(new_nodes)
     return new_nodes
+
+def get_nonlink_nodes(link_nodes, text_type, text):
+    new_nodes = []
+    link_bounds = [x for (x, y) in link_nodes]
+    nonlink_bounds = []
+    full_start = 0
+    full_end = len(text)-1
+    first_link_start = link_bounds[0][0]
+    if first_link_start != 0:
+        leading_substring = text[0:first_link_start+1]
+        leading_indices = (0, first_link_start)
+        new_nodes.append(
+            (leading_indices, TextNode(leading_substring, text_type))
+        )
+    start = link_bounds[0][1]
+    for link_start, link_end in link_bounds[1:]:
+        text_start = start
+        substring = text[text_start:link_start+1]
+        new_nodes.append(
+            ((text_start, link_start+1), TextNode(substring, text_type))
+        )
+        start = link_end
+    last_link_end = link_bounds[-1][1]-1
+    if last_link_end < full_end:
+        start = last_link_end
+        end = full_end
+        trailing_substring = text[start:]
+        new_nodes.append(((start, end), TextNode(trailing_substring, text_type)))
+    print(new_nodes)
+    return new_nodes
+
+def get_beginning(node):
+    return node[0][0]
 
 def split_nodes_link(old_nodes):
     """Accept a list of TextNode objects. Decompose the TextNode objects into
@@ -73,7 +107,9 @@ def split_nodes_link(old_nodes):
         # extract the text nodes for links
         link_nodes = get_link_nodes(full_text)
         # still need text nodes for the non-link segments
-        nonlink_nodes = get_nonlink_nodes(link_nodes, default_text_type)
-
+        nonlink_nodes = get_nonlink_nodes(link_nodes, default_text_type, full_text)
+        combined_nodes = sorted(link_nodes + nonlink_nodes, key=get_beginning)
+        just_the_nodes = [z for (x, y), z in combined_nodes]
+        new_nodes.append(just_the_nodes)
     # return list of new lists of new leaf nodes
     return new_nodes
