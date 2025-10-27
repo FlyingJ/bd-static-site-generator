@@ -6,7 +6,7 @@ from texttype import TextType
 
 markdown_regexes = {
     'image': r'(!\[([^\]]+)\]\(([^\)]+)\))',
-    'link': r'[^!](\[([^\]]+)\]\(([^\)]+)\))',
+    'link': r'(?<!!)(\[([^\]]+)\]\(([^\)]+)\))',
 }
 
 def get_bounds(text_type):
@@ -53,8 +53,6 @@ def get_link_nodes(text):
 def get_nonlink_nodes(link_nodes, text_type, text):
     new_nodes = []
     link_bounds = [x for (x, y) in link_nodes]
-    nonlink_bounds = []
-    full_start = 0
     full_end = len(text)-1
     first_link_start = link_bounds[0][0]
     if first_link_start != 0:
