@@ -36,7 +36,7 @@ def split_nodes_image(old_nodes):
 
         remaining_text = text
         for image_text, image_url in images:
-            leader, remaining_text = remaining_text.split(f'![{image_text}]({image_url})')
+            leader, remaining_text = remaining_text.split(f'![{image_text}]({image_url})', 1)
             if leader != '':
                 component_nodes.append(TextNode(leader, default_text_type))
             component_nodes.append(TextNode(image_text, TextType.IMAGE, image_url))

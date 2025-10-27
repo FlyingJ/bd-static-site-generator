@@ -36,7 +36,7 @@ def split_nodes_link(old_nodes):
 
         remaining_text = text
         for link_text, link_url in links:
-            leader, remaining_text = remaining_text.split(f'[{link_text}]({link_url})')
+            leader, remaining_text = remaining_text.split(f'[{link_text}]({link_url})', 1)
             if leader != '':
                 component_nodes.append(TextNode(leader, default_text_type))
             component_nodes.append(TextNode(link_text, TextType.LINK, link_url))
