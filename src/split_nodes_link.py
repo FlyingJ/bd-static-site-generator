@@ -23,26 +23,27 @@ def split_nodes_link(old_nodes):
         # get the default text_type for current old_node
         default_text_type = old_node.text_type
 
+        if default_text_type in [TextType.IMAGE, TextType.LINK]:
+            new_nodes.append(old_node)
+            continue
+
         # extract link elements from markdown text node
         # use the link elements to split the text into link and default
         # TextNode objects
         links = extract_markdown_links(text)
 
         if links is None:
-            new_nodes.append(TextNode(text, default_text_type))
+            new_nodes.append(old_node)
             continue
-
-        component_nodes = []
 
         remaining_text = text
         for link_text, link_url in links:
             leader, remaining_text = remaining_text.split(f'[{link_text}]({link_url})', 1)
             if leader != '':
-                component_nodes.append(TextNode(leader, default_text_type))
-            component_nodes.append(TextNode(link_text, TextType.LINK, link_url))
+                new_nodes.append(TextNode(leader, default_text_type))
+            new_nodes.append(TextNode(link_text, TextType.LINK, link_url))
         if remaining_text != '':
-            component_nodes.append(TextNode(remaining_text, default_text_type))
+            new_nodes.append(TextNode(remaining_text, default_text_type))
         
-        new_nodes.append(component_nodes)
     # return list of new lists of new TextNode objects
     return new_nodes

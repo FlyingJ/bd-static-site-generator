@@ -11,20 +11,20 @@ class TestSplitNodesImage(unittest.TestCase):
             TextType.TEXT,
         )
         result = split_nodes_image([node])
-        expectation = [[
+        expectation = [
             TextNode("This is text with an ", TextType.TEXT),
             TextNode("image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png"),
             TextNode(" and another ", TextType.TEXT),
             TextNode(
                 "second image", TextType.IMAGE, "https://i.imgur.com/3elNhQu.png"
             ),
-        ]]
+        ]
         self.assertListEqual(result, expectation)
 
     def test_split_nodes_image_no_images(self):
         node = TextNode("This is only text!", TextType.TEXT)
         result = split_nodes_image([node])
-        expectation = [[TextNode("This is only text!", TextType.TEXT)]]
+        expectation = [TextNode("This is only text!", TextType.TEXT)]
         self.assertEqual(result, expectation)
 
     def test_split_nodes_image_only_images(self):
@@ -33,11 +33,11 @@ class TestSplitNodesImage(unittest.TestCase):
             TextType.TEXT,
         )
         result = split_nodes_image([node])
-        expectation = [[
+        expectation = [
             TextNode("some fake image", TextType.IMAGE, "https://secure.example.com/fake.jpeg"),
             TextNode("another fake image", TextType.IMAGE, "http://pic.com/something.gif"),
             TextNode("foo", TextType.IMAGE, "http://foo.com/foo.png")
-        ]]
+        ]
         self.assertEqual(result, expectation)
 
 if __name__ == '__main__':
