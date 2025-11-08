@@ -197,3 +197,4 @@ cython_debug/
 .cursorindexingignore
 .python-version
 pyproject.toml
+uv.lock
