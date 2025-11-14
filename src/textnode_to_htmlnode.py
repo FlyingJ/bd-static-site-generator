@@ -1,6 +1,6 @@
 from leafnode import LeafNode
 
-def text_node_to_html_node(text_node):
+def textnode_to_htmlnode(text_node):
     conversion_map = {
         'text': lambda x: LeafNode(None,x.text),
         'bold': lambda x: LeafNode("b", x.text),

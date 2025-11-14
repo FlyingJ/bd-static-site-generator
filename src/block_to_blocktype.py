@@ -24,7 +24,7 @@ def is_ordered_list(block):
             return False
     return True
 
-def block_to_block_type(markdown):
+def block_to_blocktype(markdown):
     # is it a heading?
     if is_heading(markdown):
         return BlockType.HEADING
