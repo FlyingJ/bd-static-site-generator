@@ -6,7 +6,9 @@ from leafnode import LeafNode
 from markdown_to_blocks import markdown_to_blocks
 from parentnode import ParentNode
 from text_to_textnodes import text_to_textnodes
+from textnode import TextNode
 from textnode_to_htmlnode import textnode_to_htmlnode
+from texttype import TextType
 
 MAX_HEADING_LEVEL=6
 
@@ -79,7 +81,7 @@ def process_ordered_list(markdown):
 	return children
 
 def process_code(block):
-	return block.strip('```').lstrip()
+	return textnode_to_htmlnode(TextNode(text=block.strip('```').lstrip(), text_type=TextType.CODE))
 
 def process_paragraph(block):
 	text = ' '.join(block.splitlines())
@@ -132,12 +134,7 @@ def text_to_children(markdown):
 				children.append(
 					ParentNode(
 						tag = 'pre',
-						children = [
-							LeafNode(
-								tag='code',
-								value=process_code(child_block)
-							),
-						],
+						children = [process_code(child_block)],
 					)
 				)
 			case _:
