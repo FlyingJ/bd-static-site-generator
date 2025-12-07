@@ -1,18 +1,7 @@
 import os
 import shutil
 
-def prepare_destination(dest):
-	if 
-	print(f' - INFO: removing ')
-	shutil.rmtree(dest)
-	os.mkdir(dest)
-
-def copy_process_source(src, dest):
-	for file in os.listdir(src):
-
-
-
-def clone_dir(src='.',dest=None):
+def clone_dir(src='.', dest=None):
 	'''
 	- recursive (call for successive directories)
 	- copy all content from src directory to dest directory
@@ -20,14 +9,8 @@ def clone_dir(src='.',dest=None):
 	- copy all files, subdirectories
 	- log path of each file copied
 	'''
-	# we must be called with a dest directory
-	# or we must panic
-	if not dest:
-		raise Exception('  Error: destination directory required for cloning')
-	dest = os.path.abspath(dest)
-	prepare_destination(dest)
-
-	# we must be called with a src directory
+	# ensure source directory has been provided and exists
+	# or bail
 	if not src:
 		raise Exception('  Error: source directory must not be None')
 	# the src directory must exist
@@ -38,8 +21,18 @@ def clone_dir(src='.',dest=None):
 	if not os.path.isdir(src):
 		raise Exception(f'  Error: source ({src}) is not a directory')
 	# or we must panic
+
+	# ensure destination directory has been provided and recreate
+	# or bail
+	if not dest:
+		raise Exception('  Error: destination directory required for cloning')
+	dest = os.path.abspath(dest)
+	prepare_destination(dest)
 	
-	copy_source(src, dest)
+	# get a list of source directory contents
+	# separate files and directories
+	# copy files from source to destination
+	# call clone_dir for each directory
 
 
 '''
