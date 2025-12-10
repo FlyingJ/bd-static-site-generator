@@ -13,21 +13,19 @@ def clone_dir(src='.', dest=None):
 	# or bail
 	if not src:
 		raise Exception('  Error: source directory must not be None')
-	# the src directory must exist
 	src = os.path.abspath(src)
 	if not os.path.exists(src):
-		raise Exception(f'  Error: source ({src}) does not exist')
-	# the src directory must be a directory
+		raise Exception(f'  Error: source directory ({src}) does not exist')
 	if not os.path.isdir(src):
-		raise Exception(f'  Error: source ({src}) is not a directory')
-	# or we must panic
+		raise Exception(f'  Error: source directory ({src}) is not a directory')
 
 	# ensure destination directory has been provided and recreate
 	# or bail
 	if not dest:
-		raise Exception('  Error: destination directory required for cloning')
+		raise Exception('  Error: destination directory must not be None')
 	dest = os.path.abspath(dest)
-	prepare_destination(dest)
+	if not prepare_destination(dest):
+		raise Exception(f'    Error: unable to prepare destination ({dest})')
 	
 	# get a list of source directory contents
 	# separate files and directories
