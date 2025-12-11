@@ -198,3 +198,4 @@ cython_debug/
 .python-version
 pyproject.toml
 uv.lock
+src/test_destination/
