@@ -7,16 +7,19 @@ def extract_title(markdown):
     #print('- splitting string into lines for processing')
     blocks = [x.strip() for x in markdown.split('\n\n')]
     #print(blocks)
-    qualified_blocks = []
+    qualified_lines = []
     for block in blocks:
+        lines = block.split('\n')
         #print(f' - block: {block}')
-        if block.startswith('# '):
-            #print('-- looks like a title')
-            qualified_blocks.append(block)
+        for line in lines:
+            if line.startswith('# '):
+                #print('-- looks like a title')
+                qualified_lines.append(line)
 
-    if len(qualified_blocks) == 0:
+    qualifier_count = len(qualified_lines)
+    if qualifier_count == 0:
         raise Exception('No title found in markdown')
-    elif len(qualified_blocks) > 1:
-        raise Exception(f'Too many title lines ({len(qualified_blocks)}) found in markdown')
+    elif qualifier_count > 1:
+        raise Exception(f'Too many title lines ({qualifier_count}) found in markdown')
     else:
-        return qualified_blocks[0][1:].strip()
+        return qualified_lines[0][1:].strip()
