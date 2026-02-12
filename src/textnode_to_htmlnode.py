@@ -2,7 +2,7 @@ from leafnode import LeafNode
 
 def textnode_to_htmlnode(text_node):
     conversion_map = {
-        'text': lambda x: LeafNode(None,x.text),
+        'text': lambda x: LeafNode(None, x.text),
         'bold': lambda x: LeafNode("b", x.text),
         'italic': lambda x: LeafNode("i", x.text),
         'code': lambda x: LeafNode("code", x.text),

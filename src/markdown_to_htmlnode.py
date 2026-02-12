@@ -64,14 +64,18 @@ def process_unordered_list(markdown):
     return children
 
 def process_ordered_list(markdown):
+    ordered_list_regex = r'^(\d+\. )(.*)$'
+    ordered_list_pattern = re.compile(ordered_list_regex)
+    dirty_lines = markdown.splitlines()
     children = []
-    for line in markdown.splitlines():
-        if line == '':
+    for dirty_line in dirty_lines:
+        if dirty_line == '':
             continue
+        clean_line = ordered_list_pattern.match(dirty_line).group(2)
         children.append(
             ParentNode(
                 tag='li',
-                children=process_list_item(line),
+                children=process_list_item(clean_line),
             )
         )
     return children
