@@ -8,10 +8,10 @@ def is_code(block):
 
 def is_quote(block):
     for line in block.splitlines():
-        if not line.startswith('> '):
+        if not line.startswith('>'):
             return False
-    print(f' - is_quote: identified blockquote')
-    print(block)
+    # print(f' - is_quote: identified blockquote')
+    # print(block)
     return True
 
 def is_unordered_list(block):

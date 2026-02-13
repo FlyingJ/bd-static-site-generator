@@ -25,3 +25,4 @@ def generate_page(from_path, template_path, dest_path):
 
     dest_obj.parent.mkdir(parents=True, exist_ok=True)
     dest_obj.write_text(html)
+    return True
