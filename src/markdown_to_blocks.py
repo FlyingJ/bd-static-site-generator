@@ -3,12 +3,8 @@ block_delimiter = {
     'standard': '\n\n',
 }
 
-
-
-
 def markdown_to_blocks(md):
     new_blocks = []
-    
     markdown = md.strip()
     
     if block_delimiter['code'] in markdown:
