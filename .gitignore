@@ -1,6 +1,7 @@
 # data
 public/
 src/test_output*
+src/test_public*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
