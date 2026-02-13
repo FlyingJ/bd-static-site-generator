@@ -21,30 +21,34 @@ def process_heading(markdown):
     heading_text = matches.group(2)
     return heading_level, heading_text
 
-def process_quote_lines(quote_lines):
-    children = []
-    for quote_line in quote_lines:
-        quote_textnodes = text_to_textnodes(quote_line)
-        for quote_textnode in quote_textnodes:
-            children.append(textnode_to_htmlnode(quote_textnode))
-    return children
+# def process_quote_lines(quote_lines):
+#     children = []
+#     for quote_line in quote_lines:
+#         quote_textnodes = text_to_textnodes(quote_line)
+#         for quote_textnode in quote_textnodes:
+#             children.append(textnode_to_htmlnode(quote_textnode))
+#     return children
 
 def process_quote(markdown):
-    quote_regex = r'^(> )(.*)$'
-    quote_pattern = re.compile(quote_regex)
-    lines = []
-    for dirty in markdown.splitlines():
-        # skip empty lines
-        if dirty == '':
-            continue
-        if quote_pattern.match(dirty):
-            lines.append(dirty[2:])
-        else:
-            raise Exception('error: busted blockquote markdown')
-    return [textnode_to_htmlnode(node) for node in text_to_textnodes(''.join(lines))]
+    # a block quote must allow structure as well as formatting
+    # each line is a parent of processed html nodes that form a line
+    # the block is the collection of the parent nodes
+    children = []
+    for line in markdown.splitlines():
+        
+        children.append(
+            ParentNode(
+                tag = 'p',
+                children = get_htmlnodes_from_text_line(line[2:] if len(line) > 2 else ''),
+            )
+        )
+    return children
+
+def get_htmlnodes_from_text_line(text):
+    return [textnode_to_htmlnode(text_node) for text_node in text_to_textnodes(text)]
 
 def process_list_item(line):
-    return [textnode_to_htmlnode(node) for node in text_to_textnodes(line)]
+    return [textnode_to_htmlnode(text_node) for text_node in text_to_textnodes(line)]
 
 def process_unordered_list(markdown):
     unordered_list_regex = r'^(- )(.*)$'

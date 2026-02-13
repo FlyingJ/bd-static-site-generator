@@ -62,6 +62,7 @@ So sayeth:
 > That shit _Jay_ said?
 > That was some **bullshit**.
 > Maddening, it is.
+> -- Jason
 
 ## There will be lists
 
@@ -97,7 +98,7 @@ And a final plain, text paragraph.
             '## There will be exposition and quotes',
             'There will be gobbldy gook written that will pass down the\nages, improving the lot of no one. Not once. Not ever.',
             'So sayeth:',
-            '> That shit _Jay_ said?\n> That was some **bullshit**.\n> Maddening, it is.',
+            '> That shit _Jay_ said?\n> That was some **bullshit**.\n> Maddening, it is.\n> -- Jason',
             '## There will be lists',
             '- An **unordered** list item\n- _Another_ unordered list item',
             '## There may be numbered lists',

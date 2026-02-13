@@ -80,7 +80,7 @@ stuff.
 
 ## There will be exposition and quotes
 
-There will be gobbldy gook written that will pass down the 
+There will be gobbldy gook written that will pass down the
 ages, improving the lot of no one. Not once. Not ever.
 
 So sayeth:
